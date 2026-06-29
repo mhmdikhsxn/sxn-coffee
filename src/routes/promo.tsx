@@ -58,9 +58,8 @@ function PromoPage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-10">
-        <p className="text-xs font-bold uppercase tracking-widest text-electric">Promo aktif</p>
-        <h1 className="mt-2 font-display font-extrabold text-cobalt-deep text-4xl sm:text-5xl">Hemat Bareng Paman</h1>
-        <p className="mt-3 max-w-2xl text-muted-foreground">Tinggal pilih promo, salin kode, dan nikmati kopi favorit kamu.</p>
+        <h1 className="font-display font-extrabold text-cobalt-deep text-4xl sm:text-5xl">Hemat Bareng Paman</h1>
+        <p className="mt-1 max-w-2xl text-muted-foreground">Tinggal pilih promo, salin kode, dan nikmati kopi favorit kamu.</p>
 
         <div className="mt-7 flex flex-wrap gap-2">
           {(["All", "Dine-In Only", "App Only", "Bank Promo"] as const).map((t) => (

@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { MapPin, Menu, X } from "lucide-react";
+import logo from "@/assets/logo/logo.png";
+import logo2 from "@/assets/logo/logo2.png";
 
 const links = [
   { to: "/menu", label: "Menu" },
   { to: "/service", label: "Service" },
   { to: "/promo", label: "Promo" },
   { to: "/about", label: "About Us" },
-  { to: "/find-a-store", label: "Find a Store" },
 ] as const;
 
 export function Navbar() {
@@ -23,55 +24,66 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ease-out ${
         scrolled
-          ? "bg-cobalt-deep/85 backdrop-blur-md border-b border-electric/20"
-          : "bg-transparent"
+          ? "bg-cobalt-deep/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] py-2"
+          : "bg-transparent py-4"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 shrink-0 group">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-electric text-white font-extrabold text-sm shadow-glow group-hover:scale-105 transition-transform">
-              PB
-            </span>
-            <span className={`font-display font-extrabold tracking-tight text-base sm:text-lg ${scrolled ? "text-white" : "text-cobalt-deep"}`}>
-              PAMAN BESAR
-            </span>
+        <div className="flex h-14 items-center justify-between">
+          {/* LOGO (KIRI) */}
+          <Link to="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="h-12 w-full overflow-hidden">
+              <img
+                src={scrolled ? logo2 : logo}
+                alt="logo"
+                className="h-full w-full object-cover"
+              />
+            </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
-            {links.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-                  scrolled
-                    ? "text-white/85 hover:text-white hover:bg-white/10"
-                    : "text-cobalt-deep hover:bg-electric-soft"
-                }`}
-                activeProps={{
-                  className: scrolled
-                    ? "px-4 py-2 rounded-full text-sm font-semibold text-white bg-white/15"
-                    : "px-4 py-2 rounded-full text-sm font-semibold text-electric bg-electric-soft",
-                }}
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+          {/* RIGHT ALIGNED NAV + CTA WRAPPER */}
+          <div className="hidden lg:flex items-center ml-auto gap-2">
+            <nav className="flex items-center gap-1 mr-4">
+              {links.map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                    scrolled
+                      ? "text-slate-300 hover:text-white hover:bg-white/10"
+                      : "text-cobalt-deep/80 hover:text-cobalt-deep hover:bg-black/5"
+                  }`}
+                  activeProps={{
+                    className: scrolled
+                      ? "!text-white bg-white/20 shadow-inner font-bold"
+                      : "!text-electric bg-electric/10 font-bold",
+                  }}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
 
-          <div className="hidden lg:block">
             <Link
-              to="/menu"
-              className="inline-flex items-center rounded-full bg-electric px-5 py-2.5 text-sm font-bold text-white shadow-glow hover:bg-electric/90 transition"
+              to="/store-location"
+              className="relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-electric to-blue-600 p-0.5 font-bold text-white hover:shadow-[0_0_35px_rgba(59,130,246,0.65)] hover:scale-105 active:scale-95 transition-all duration-300"
             >
-              Order Now
+              <span className="flex items-center gap-2 px-6 py-2 rounded-full bg-transparent text-sm">
+                <MapPin className="w-4 h-4" />
+                Find a Store
+              </span>
             </Link>
           </div>
 
+          {/* MOBILE TOGGLE */}
           <button
-            className={`lg:hidden grid h-10 w-10 place-items-center rounded-full ${scrolled ? "text-white hover:bg-white/10" : "text-cobalt-deep hover:bg-electric-soft"}`}
+            className={`lg:hidden grid h-10 w-10 place-items-center rounded-xl border transition-all duration-200 ml-auto ${
+              scrolled
+                ? "text-white border-white/10 hover:bg-white/10"
+                : "text-cobalt-deep border-black/5 hover:bg-black/5"
+            }`}
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -80,26 +92,31 @@ export function Navbar() {
         </div>
       </div>
 
+      {/* MOBILE DROPDOWN */}
       {open && (
-        <div className="lg:hidden bg-cobalt-deep/95 backdrop-blur-md border-t border-electric/20">
-          <div className="px-4 py-3 flex flex-col gap-1">
+        <div className="lg:hidden mt-2 border-t border-white/10 bg-cobalt-deep/95 backdrop-blur-2xl px-4 pt-3 pb-6 shadow-2xl animate-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col gap-1.5">
             {links.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
                 onClick={() => setOpen(false)}
-                className="px-4 py-3 rounded-xl text-sm font-semibold text-white/90 hover:bg-white/10"
-                activeProps={{ className: "px-4 py-3 rounded-xl text-sm font-semibold text-white bg-electric/30" }}
+                className="px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
+                activeProps={{
+                  className:
+                    "!text-white bg-gradient-to-r from-electric/30 to-transparent border-l-4 border-electric font-bold pl-3",
+                }}
               >
                 {l.label}
               </Link>
             ))}
             <Link
-              to="/menu"
+              to="/store-location"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-electric px-5 py-3 text-sm font-bold text-white"
+              className="mt-4 flex items-center justify-center gap-2 w-full text-center rounded-xl bg-gradient-to-r from-electric to-blue-600 py-3 text-sm font-bold text-white shadow-lg shadow-electric/30 active:scale-[0.98] transition-transform"
             >
-              Order Now
+              Find a Store
+              <MapPin className="w-4 h-4" />
             </Link>
           </div>
         </div>

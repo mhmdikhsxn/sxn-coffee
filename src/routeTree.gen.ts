@@ -9,13 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StoreLocationRouteImport } from './routes/store-location'
 import { Route as ServiceRouteImport } from './routes/service'
 import { Route as PromoRouteImport } from './routes/promo'
 import { Route as MenuRouteImport } from './routes/menu'
-import { Route as FindAStoreRouteImport } from './routes/find-a-store'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const StoreLocationRoute = StoreLocationRouteImport.update({
+  id: '/store-location',
+  path: '/store-location',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiceRoute = ServiceRouteImport.update({
   id: '/service',
   path: '/service',
@@ -29,11 +34,6 @@ const PromoRoute = PromoRouteImport.update({
 const MenuRoute = MenuRouteImport.update({
   id: '/menu',
   path: '/menu',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FindAStoreRoute = FindAStoreRouteImport.update({
-  id: '/find-a-store',
-  path: '/find-a-store',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -50,54 +50,62 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/find-a-store': typeof FindAStoreRoute
   '/menu': typeof MenuRoute
   '/promo': typeof PromoRoute
   '/service': typeof ServiceRoute
+  '/store-location': typeof StoreLocationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/find-a-store': typeof FindAStoreRoute
   '/menu': typeof MenuRoute
   '/promo': typeof PromoRoute
   '/service': typeof ServiceRoute
+  '/store-location': typeof StoreLocationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/find-a-store': typeof FindAStoreRoute
   '/menu': typeof MenuRoute
   '/promo': typeof PromoRoute
   '/service': typeof ServiceRoute
+  '/store-location': typeof StoreLocationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/find-a-store' | '/menu' | '/promo' | '/service'
+  fullPaths:
+    '/' | '/about' | '/menu' | '/promo' | '/service' | '/store-location'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/find-a-store' | '/menu' | '/promo' | '/service'
+  to: '/' | '/about' | '/menu' | '/promo' | '/service' | '/store-location'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/find-a-store'
     | '/menu'
     | '/promo'
     | '/service'
+    | '/store-location'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  FindAStoreRoute: typeof FindAStoreRoute
   MenuRoute: typeof MenuRoute
   PromoRoute: typeof PromoRoute
   ServiceRoute: typeof ServiceRoute
+  StoreLocationRoute: typeof StoreLocationRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/store-location': {
+      id: '/store-location'
+      path: '/store-location'
+      fullPath: '/store-location'
+      preLoaderRoute: typeof StoreLocationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/service': {
       id: '/service'
       path: '/service'
@@ -117,13 +125,6 @@ declare module '@tanstack/react-router' {
       path: '/menu'
       fullPath: '/menu'
       preLoaderRoute: typeof MenuRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/find-a-store': {
-      id: '/find-a-store'
-      path: '/find-a-store'
-      fullPath: '/find-a-store'
-      preLoaderRoute: typeof FindAStoreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -146,11 +147,21 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  FindAStoreRoute: FindAStoreRoute,
   MenuRoute: MenuRoute,
   PromoRoute: PromoRoute,
   ServiceRoute: ServiceRoute,
+  StoreLocationRoute: StoreLocationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
