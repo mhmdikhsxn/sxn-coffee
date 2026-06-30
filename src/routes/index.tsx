@@ -79,9 +79,9 @@ function Home() {
                 to="/menu"
                 className="inline-flex items-center gap-2 rounded-full bg-cobalt-deep px-6 py-3 text-sm font-bold text-white hover:bg-cobalt transition shadow-glow"
               >
-                Lihat Menu <ArrowRight className="h-4 w-4" />
+                Lihat Menu <ChevronRight className="h-4 w-4" />
               </Link>
-              <Link
+              <Link 
                 to="/store-location"
                 className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-6 py-3 text-sm font-bold text-cobalt-deep hover:bg-secondary transition"
               >
