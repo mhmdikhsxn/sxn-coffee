@@ -32,17 +32,16 @@ export function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 items-center justify-between">
-          {/* LOGO (KIRI) */}
-          <Link to="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="h-12 w-full overflow-hidden">
-              <img
-                src={scrolled ? logo2 : logo}
-                alt="logo"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </Link>
-
+        {/* LOGO (KIRI) */}
+<Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center shrink-0 group">
+  <div className="h-10 w-28 overflow-hidden">
+    <img
+      src={scrolled ? logo2 : logo}
+      alt="logo"
+      className="h-full w-full object-cover object-center"
+    />
+  </div>
+</Link>
           {/* RIGHT ALIGNED NAV + CTA WRAPPER */}
           <div className="hidden lg:flex items-center ml-auto gap-2">
             <nav className="flex items-center gap-1 mr-4">
@@ -66,15 +65,15 @@ export function Navbar() {
               ))}
             </nav>
 
-            <Link
-              to="/store-location"
+            <a
+              href="/#store"
               className="relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-electric to-blue-600 p-0.5 font-bold text-white hover:shadow-[0_0_35px_rgba(59,130,246,0.65)] hover:scale-105 active:scale-95 transition-all duration-300"
             >
               <span className="flex items-center gap-2 px-6 py-2 rounded-full bg-transparent text-sm">
                 <MapPin className="w-4 h-4" />
                 Find a Store
               </span>
-            </Link>
+            </a>
           </div>
 
           {/* MOBILE TOGGLE */}
